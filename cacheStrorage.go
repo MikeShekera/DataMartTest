@@ -113,8 +113,9 @@ func (c *Cache) innerAdd(key, value any, endTime time.Time) {
 
 func (c *Cache) Get(key any) (value any, ok bool) {
 	c.mu.RLock()
+	defer c.mu.RUnlock()
+
 	if val, ok := c.cacheMap[key]; ok {
-		c.mu.RUnlock()
 		if !val.endTimepoint.IsZero() {
 			if val.endTimepoint.Before(time.Now()) {
 				c.Remove(key)
