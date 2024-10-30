@@ -76,6 +76,21 @@ func TestCache_GetOutdated(t *testing.T) {
 	}
 }
 
+func TestCache_GetNotExisting(t *testing.T) {
+	cache, _ := InitializeCache(3)
+
+	elems := rand.Intn(10)
+	i := 0
+	for i < elems {
+		cache.Add(i, i)
+		i++
+	}
+	_, ok := cache.Get(100)
+	if ok {
+		fmt.Printf("Expected %t, but got %t", !ok, ok)
+	}
+}
+
 func TestCache_ConcurrentAdd(t *testing.T) {
 	cache, _ := InitializeCache(50)
 	expected := 50
